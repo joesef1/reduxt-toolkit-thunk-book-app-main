@@ -16,18 +16,22 @@ useEffect(() => {
 
   return (
     <Fragment>
-      <hr className='my-5' />
+  
+              <hr className='my-5' />
       <div className='row'>
         <div className='col'>
           <BooksList
-           isLoading={isLoading}
-           books={books}
-           />
+          isLoading={isLoading}
+          books={books}
+          
+          />
         </div>
         <div className='col side-line'>
           <BookInfo />
         </div>
       </div>
+      
+
     </Fragment>
   );
 };
