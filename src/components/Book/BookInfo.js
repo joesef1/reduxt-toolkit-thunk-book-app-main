@@ -9,17 +9,22 @@ useEffect(() => {
 
   return (
     <Fragment>
-      <h2>Book Details</h2>
-      <div className='alert alert-secondary' role='alert'>
-        There is no books selected yet. Please select!
-      </div>
+    <h2>Book Details</h2>
+    {data ? (
       <div>
-      {/* <p className='fw-bold'> Title: {data.title}</p> */}
-        {/* <p className='fw-light'>Description: {Info.Description}</p> */}
-        {/* <p className='fst-italic'>Price: {Info.price}</p>  */}
+        <p className='fw-bold'>Title: {data.title}</p>
+        <p className='fst-italic'>Price: {data.price}</p>
+        <p className='fst-italic'>Auther: {data.auther}</p>
+
+        <p className='fw-light'>Description: {data.description}</p>
       </div>
-    </Fragment>
+    ) : (
+      <div className='alert alert-secondary' role='alert'>
+        There is no book selected yet. Please select!
+      </div>
+    )}
+  </Fragment>
   );
 };
 
-export default BookInfo;
+export default React.memo(BookInfo);
