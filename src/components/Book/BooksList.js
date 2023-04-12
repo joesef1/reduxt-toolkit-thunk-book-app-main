@@ -1,8 +1,11 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch ,useSelector} from 'react-redux';
+import { deleteBooks } from '../../store/bookSlice';
 
 const BooksList = ({isLoading, books}) => {
   const {isLoggedIn} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
 
   const {error} = useSelector(state => state.books);
 
@@ -16,7 +19,7 @@ const BooksList = ({isLoading, books}) => {
             <button type='button' className='btn btn-primary'>
               Read
             </button>
-            <button type='button' className='btn btn-danger' disabled={!isLoggedIn}>
+            <button onClick={()=>dispatch(deleteBooks(item.id))} type='button' className='btn btn-danger' disabled={!isLoggedIn}>
               Delete
             </button>
           </div>
