@@ -37,20 +37,40 @@ export const insertBook = createAsyncThunk(
   }
 })
 //
+
 //deleteBooks
 export const deleteBooks = createAsyncThunk(
   'book/deleteBooks',
-  async(id, thunkAPI) => {
+  async(item, thunkAPI) => {
     const {rejectWithValue} = thunkAPI
   try {
-   await fetch(`http://localhost:3005/book/${id}`,{
+   await fetch(`http://localhost:3005/book/${item.id}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     });
-    // const data = await res.json();
-    return id;
+    return item;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+})
+//
+
+
+//readBook
+export const readBook = createAsyncThunk(
+  'book/readBook',
+  async(item, thunkAPI) => {
+    const {rejectWithValue} = thunkAPI
+  try {
+   await fetch(`http://localhost:3005/book/${item.id}`,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    });
+    return item;
   } catch (error) {
     return rejectWithValue(error.message);
   }
@@ -59,8 +79,8 @@ export const deleteBooks = createAsyncThunk(
 
 
 export const bookSlice = createSlice({
-  name: 'book',
-  initialState: {books: [] , isLoading: false, error: null },
+  name: 'books',
+  initialState: {books: [] , isLoading: false, error: null , readBook:null},
   reducers: {},
   extraReducers: {
     //getBooks
@@ -70,12 +90,12 @@ export const bookSlice = createSlice({
     },
     [getBooks.fulfilled]: (state, action) => {
       state.isLoading = false
-      console.log(action);
+      // console.log(action);
       state.books = action.payload;      
     },
     [getBooks.rejected]: (state, action) => {
       state.isLoading = false
-      console.log(action);
+      // console.log(action);
       state.error = action.payload
     },
 
@@ -86,12 +106,12 @@ export const bookSlice = createSlice({
     },
     [insertBook.fulfilled]: (state, action) => {
       state.isLoading = false
-      console.log(action);
+      // console.log(action);
       state.books.push(action.payload);      
     },
     [insertBook.rejected]: (state, action) => {
       state.isLoading = false
-      console.log(action);
+      // console.log(action);
       state.error = action.payload
     },
     //
@@ -102,9 +122,27 @@ export const bookSlice = createSlice({
         },
         [deleteBooks.fulfilled]: (state, action) => {
           state.isLoading = false
-          state.books = state.books.filter((el) => el.id !== action.payload)
+          state.books = state.books.filter((el) => el.id !== action.payload.id)
         },
         [deleteBooks.rejected]: (state, action) => {
+          state.isLoading = false
+          state.error = action.payload
+        },
+
+        //  // deleteBooks
+        [readBook.pending]: (state, action) => {
+          state.isLoading = true
+          state.error = false      
+        },
+        [readBook.fulfilled]: (state, action) => {
+          state.isLoading = false
+          state.readBook = action.payload ;
+          // console.log(readBook());
+          // console.log(state.readBook);
+          // console.log(action.payload);
+
+        },
+        [readBook.rejected]: (state, action) => {
           state.isLoading = false
           state.error = action.payload
         },
